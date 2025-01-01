@@ -16,6 +16,7 @@ export class Controller {
             HOST,
             PORT,
             EXTERNAL_HOST,
+            BASE_URL,
         } = process.env;
 
         this.#controller = new DaikinCloudController({
@@ -29,7 +30,7 @@ export class Controller {
             oidcCallbackServerPort: PORT,
             /* OIDC Redirect URI */
             oidcCallbackServerExternalAddress: EXTERNAL_HOST ?? Controller.defaultHost,
-            // oidcCallbackServerBaseUrl: 'https://daikin.local:8765',
+            oidcCallbackServerBaseUrl: BASE_URL,
             /* path of file used to cache the OIDC tokenset */
             oidcTokenSetFilePath: resolve(__dirname, '..', 'data', '.daikin-controller-cloud-tokenset'),
             /* time to wait for the user to go through the authorization grant flow before giving up (in seconds) */
