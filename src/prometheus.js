@@ -34,6 +34,20 @@ export function init(acController) {
             }, acController.rateLimitStatus.remainingDay);
         },
     });
+
+    new Gauge({
+        name: 'daikin_device_on',
+        help: 'Device powered on flag',
+        labelNames: ['deviceId', 'deviceName'],
+        collect: function() {
+            for (let device of acController.devices) {
+                this.set({
+                    deviceId: device.desc.id,
+                    deviceName: device.managementPoints.climateControl.name.value,
+                }, device.managementPoints.climateControl.onOffMode.value === 'on' ? 1 : 0);
+            }
+        },
+    });
 }
 
 export async function startServer() {
