@@ -7,10 +7,11 @@ const __dirname = import.meta.dirname;
 // Read OIDC client credentials as environment variables.
 // ============================================================================
 
-const { oidc_client_id, oidc_client_secret } = process.env;
-if (!oidc_client_id || !oidc_client_secret) {
-    console.log('Please set the oidcClientId and oidcClientSecret environment variables');
-    process.exit(0);
+const { OIDC_CLIENT_ID, OIDC_CLIENT_SECRET } = process.env;
+
+if (!OIDC_CLIENT_ID || !OIDC_CLIENT_SECRET) {
+    console.log('Please set the OIDC_CLIENT_ID and OIDC_CLIENT_SECRET environment variables');
+    process.exit(1);
 }
 
 // ============================================================================
@@ -22,9 +23,9 @@ if (!oidc_client_id || !oidc_client_secret) {
 
 const controller = new DaikinCloudController({
     /* OIDC client id */
-    oidcClientId: oidc_client_id,
+    oidcClientId: OIDC_CLIENT_ID,
     /* OIDC client secret */
-    oidcClientSecret: oidc_client_secret,
+    oidcClientSecret: OIDC_CLIENT_SECRET,
     /* Network interface that the HTTP server should bind to. Bind to all interfaces for convenience, please limit as needed to single interfaces! */
     // oidcCallbackServerBindAddr: '0.0.0.0',
     /* port that the HTTP server should bind to */
