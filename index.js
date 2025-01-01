@@ -66,7 +66,7 @@ Afterwards you are redirected to Daikin to approve the access and then redirecte
 // ============================================================================
 
 controller.on('rate_limit_status', (rateLimitStatus) => {
-    console.log(rateLimitStatus);
+    console.log('Rate limit status', rateLimitStatus);
 });
 
 (async () => {
@@ -79,6 +79,6 @@ controller.on('rate_limit_status', (rateLimitStatus) => {
     // ==========================================================================
 
     const devices = await controller.getCloudDeviceDetails();
-    console.log(devices);
+    console.log('Devices', devices);
 
 })().catch(console.error);
