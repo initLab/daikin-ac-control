@@ -14,6 +14,8 @@ if (!OIDC_CLIENT_ID || !OIDC_CLIENT_SECRET) {
     process.exit(1);
 }
 
+const defaultHost = '127.0.0.1';
+
 // ============================================================================
 // Create a new instance of the Onecta API client. Note that the
 // `oidcCallbackServerBaseUrl` **must** be set as the application's
@@ -27,12 +29,12 @@ const controller = new DaikinCloudController({
     /* OIDC client secret */
     oidcClientSecret: OIDC_CLIENT_SECRET,
     /* Network interface that the HTTP server should bind to. Bind to all interfaces for convenience, please limit as needed to single interfaces! */
-    // oidcCallbackServerBindAddr: '0.0.0.0',
+    oidcCallbackServerBindAddr: process.env.HOST ?? defaultHost,
     /* port that the HTTP server should bind to */
-    // oidcCallbackServerPort: 8765,
+    oidcCallbackServerPort: process.env.PORT,
     /* OIDC Redirect URI */
-    // oidcCallbackServerExternalAddress: 'daikin.local',
-    //oidcCallbackServerBaseUrl: 'https://daikin.local:8765', // or use local IP address where server is reachable
+    oidcCallbackServerExternalAddress: process.env.EXTERNAL_HOST ?? defaultHost,
+    // oidcCallbackServerBaseUrl: 'https://daikin.local:8765',
     /* path of file used to cache the OIDC tokenset */
     oidcTokenSetFilePath: resolve(__dirname, 'data', '.daikin-controller-cloud-tokenset'),
     /* time to wait for the user to go through the authorization grant flow before giving up (in seconds) */
