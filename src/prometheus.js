@@ -48,6 +48,48 @@ export function init(acController) {
             }
         },
     });
+
+    new Gauge({
+        name: 'daikin_device_room_temperature_celsius',
+        help: 'Device room temperature',
+        labelNames: ['deviceId', 'deviceName'],
+        collect: function() {
+            for (let device of acController.devices) {
+                this.set({
+                    deviceId: device.desc.id,
+                    deviceName: device.managementPoints.climateControl.name.value,
+                }, device.managementPoints.climateControl.sensoryData['/roomTemperature'].value);
+            }
+        },
+    });
+
+    new Gauge({
+        name: 'daikin_device_room_humidity_percent',
+        help: 'Device room humidity',
+        labelNames: ['deviceId', 'deviceName'],
+        collect: function() {
+            for (let device of acController.devices) {
+                this.set({
+                    deviceId: device.desc.id,
+                    deviceName: device.managementPoints.climateControl.name.value,
+                }, device.managementPoints.climateControl.sensoryData['/roomHumidity'].value);
+            }
+        },
+    });
+
+    new Gauge({
+        name: 'daikin_device_outdoor_temperature_celsius',
+        help: 'Device outdoor temperature',
+        labelNames: ['deviceId', 'deviceName'],
+        collect: function() {
+            for (let device of acController.devices) {
+                this.set({
+                    deviceId: device.desc.id,
+                    deviceName: device.managementPoints.climateControl.name.value,
+                }, device.managementPoints.climateControl.sensoryData['/outdoorTemperature'].value);
+            }
+        },
+    });
 }
 
 export async function startServer() {
