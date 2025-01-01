@@ -106,7 +106,7 @@ export async function startServer() {
             res.set('Content-Type', register.contentType);
             res.end(await register.metrics());
         } catch (ex) {
-            res.status(500).end(ex);
+            res.status(500).end(ex.stack);
         }
     });
 
