@@ -34,7 +34,7 @@ export class Controller {
             /* path of file used to cache the OIDC tokenset */
             oidcTokenSetFilePath: resolve(__dirname, '..', 'data', '.daikin-controller-cloud-tokenset'),
             /* time to wait for the user to go through the authorization grant flow before giving up (in seconds) */
-            oidcAuthorizationTimeoutS: 120,
+            oidcAuthorizationTimeoutS: 3600,
             // certificatePathKey: resolve(__dirname, '..', 'cert', 'cert.key'),
             // certificatePathCert: resolve(__dirname, '..', 'cert', 'cert.pem'),
         });
