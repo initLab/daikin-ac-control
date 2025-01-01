@@ -9,9 +9,5 @@ if (!process.env.OIDC_CLIENT_ID || !process.env.OIDC_CLIENT_SECRET) {
 const controller = new Controller();
 
 initPrometheus(controller);
-
 await controller.startPolling();
-console.log('Rate limit status', controller.rateLimitStatus);
-console.log('Devices', controller.devices);
-
 await startPrometheusServer();
