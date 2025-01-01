@@ -43,7 +43,7 @@ export class Controller {
             console.log(
 `Please make sure that ${url} is set as "Redirect URL" in your Daikin Developer Portal account for the used Client!
  
-Then please open the URL ${url} in your browser and accept the security warning for the self signed certificate (if you open this for the first time).
+Then please open the URL ${url} in your browser.
  
 Afterwards you are redirected to Daikin to approve the access and then redirected back.`
             );
