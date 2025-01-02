@@ -7,7 +7,10 @@ export class Controller {
     #controller;
     #devices = [];
     #rateLimitStatus = {};
+    #pollingIntervalMs;
     static defaultHost = '127.0.0.1';
+    // split 50/50 between polling and control
+    static pollingQuotaRatio = 0.5;
 
     constructor() {
         const {
@@ -62,9 +65,53 @@ Afterwards you are redirected to Daikin to approve the access and then redirecte
         return this.#rateLimitStatus;
     }
 
-    async startPolling() {
+    static #calculatePollingInterval(dailyLimit) {
+        const pollingQuota = dailyLimit * this.pollingQuotaRatio;
+        const dailyMs = 24 * 60 * 60 * 1000;
+        return dailyMs / pollingQuota;
+    }
+
+    #isQuotaAvailable() {
+        if (!this.#rateLimitStatus) {
+            // no rate limit status yet, let it through
+            return true;
+        }
+
+        if (this.#rateLimitStatus.remainingDay < this.#rateLimitStatus.limitDay * Controller.pollingQuotaRatio) {
+            // daily quota reached
+            return false;
+        }
+
+        if (this.#rateLimitStatus.remainingMinute < this.#rateLimitStatus.limitMinute * Controller.pollingQuotaRatio) {
+            // minute quota reached
+            return false;
+        }
+
+        // clear to send update
+        return true;
+    }
+
+    async #updateDevices() {
+        if (!this.#isQuotaAvailable()) {
+            console.warn('Skipping update as no quota is available', this.#rateLimitStatus);
+            return;
+        }
+
         this.#devices = await this.#controller.getCloudDevices();
-        // TODO
-        // this.#rateLimitStatus is now available
+        this.#pollingIntervalMs = Controller.#calculatePollingInterval(this.#rateLimitStatus.limitDay);
+    }
+
+    #scheduleNextUpdate() {
+        console.log('Scheduling next update in', Math.round(this.#pollingIntervalMs / 1000), 'seconds');
+        setTimeout(this.#updateAndScheduleNext, this.#pollingIntervalMs);
+    }
+
+    async #updateAndScheduleNext() {
+        await this.#updateDevices();
+        this.#scheduleNextUpdate();
+    }
+
+    async startPolling() {
+        await this.#updateAndScheduleNext();
     }
 }
