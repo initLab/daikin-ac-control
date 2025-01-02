@@ -103,7 +103,7 @@ Afterwards you are redirected to Daikin to approve the access and then redirecte
 
     #scheduleNextUpdate() {
         console.log('Scheduling next update in', Math.round(this.#pollingIntervalMs / 1000), 'seconds');
-        setTimeout(this.#updateAndScheduleNext, this.#pollingIntervalMs);
+        setTimeout(() => this.#updateAndScheduleNext(), this.#pollingIntervalMs);
     }
 
     async #updateAndScheduleNext() {
