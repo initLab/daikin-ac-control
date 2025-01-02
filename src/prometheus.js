@@ -111,7 +111,7 @@ export async function startServer() {
     });
 
     await new Promise(resolve => {
-        server.listen(port, () => {
+        server.listen(port, process.env.HOST ?? '127.0.0.1', () => {
             console.log(`Server listening on port ${port}, metrics exposed on /metrics endpoint`);
             resolve();
         });
