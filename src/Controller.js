@@ -93,8 +93,7 @@ Afterwards you are redirected to Daikin to approve the access and then redirecte
 
     async #updateDevices() {
         if (!this.#isQuotaAvailable()) {
-            console.warn('Skipping update as no quota is available', this.#rateLimitStatus);
-            return;
+            console.warn('Quota may not be available', this.#rateLimitStatus);
         }
 
         this.#devices = await this.#controller.getCloudDevices();
